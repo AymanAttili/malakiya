@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+}
+
+@font-face {
+  font-family: 'Araboto-black';
+  src: url('./assets/fonts/Araboto-Black.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
