@@ -1,18 +1,22 @@
 import { Box, Button, FormLabel, Grid2 as Grid, TextField, Typography } from '@mui/material'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import img6 from '../images/img6.png'
 import img7 from '../images/img7.png'
 import img8 from '../images/img8.png'
 import { usePawnedReservations } from '../features/reservations/usePawnedReservations';
 import { useTimes } from '../features/times/useTimes';
 import { useReserve } from '../features/reservations/useReserve';
+import { MuiTelInput } from 'mui-tel-input';
+import dayjs from 'dayjs';
 
 
 function ReservationForm() {
+    const today = useRef(dayjs())
+
     const [selectedTime, setSelectedTime] = useState(null)
-    const [selectedDate, setSelectedDate] = useState(() => format(new Date(), 'yyyy-MM-dd'))
+    const [selectedDate, setSelectedDate] = useState(() => format(today.current.$d, 'yyyy-MM-dd'))
     const [selectedServices, setSelectedServices] = useState([]);
     const [name, setName] = useState('')
     const [number, setNumber] = useState('')
@@ -89,17 +93,22 @@ function ReservationForm() {
             </Typography>
 
             <Grid container size={12} flexDirection={'column'} alignItems={'center'} maxWidth={360} paddingY={2} border={2} borderRadius={8}>
-                <DateCalendar sx={{
-                    borderBottom: 2,
-                    width: 280
-                }}
+                <DateCalendar
+                    minDate={today.current}
+                    defaultValue={today.current}
+                    sx={{
+                        borderBottom: 2,
+                        width: 280
+                    }}
                     slotProps={{
                         calendarHeader: {
                             sx: {
                                 direction: 'ltr',
                             }
                         }
-                    }} onChange={handleDateChange} >
+                    }}
+                    onChange={handleDateChange}
+                >
 
                 </DateCalendar>
                 <Typography>
@@ -183,6 +192,7 @@ function ReservationForm() {
                     <TextField id='name' type='text' required
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        fullWidth
                     />
                 </Grid>
                 <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
@@ -192,16 +202,20 @@ function ReservationForm() {
                     <TextField id='address' type='text' required
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
+                        fullWidth
                     />
                 </Grid>
                 <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
                     <FormLabel htmlFor='number'>
                         الرقم
                     </FormLabel>
-                    <TextField id='number' type='text' required
+                    <MuiTelInput
+                        id='number' required
                         value={number}
                         onChange={(e) => setNumber(e.target.value)}
+                        fullWidth
                     />
+
                 </Grid>
                 <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
                     <FormLabel htmlFor='email'>
@@ -210,6 +224,7 @@ function ReservationForm() {
                     <TextField id='email' type={'email'} required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        fullWidth
                     />
                 </Grid>
             </Grid>
