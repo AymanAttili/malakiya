@@ -24,6 +24,7 @@ function Dashboard() {
         <Grid container flexDirection={'column'} size={12} minHeight={'100dvh'} alignItems={'center'} color={'primary.main'}>
             <Grid container flexDirection={'row'} position={'absolute'}
                 justifyContent={{ xs: 'space-between', sm: 'start' }}
+                alignItems={'center'}
                 top={0} size={12} paddingY={2} paddingX={4} spacing={{ md: 8, lg: 12 }} bgcolor={alpha(theme.palette.secondary.main, 0.85)} >
                 <Typography variant="h5" >
                     القاعة الملكية
