@@ -10,6 +10,7 @@ import { useTimes } from '../features/times/useTimes';
 import { useReserve } from '../features/reservations/useReserve';
 import { MuiTelInput } from 'mui-tel-input';
 import dayjs from 'dayjs';
+import { LoadingButton } from '@mui/lab';
 
 
 function ReservationForm() {
@@ -212,7 +213,7 @@ function ReservationForm() {
                     <MuiTelInput
                         id='number' required
                         value={number}
-                        onChange={(e) => setNumber(e.target.value)}
+                        onChange={(e) => setNumber(e)}
                         fullWidth
                     />
 
@@ -234,9 +235,18 @@ function ReservationForm() {
                     {error}
                 </Typography>
             }
-            <Button size={'large'} variant='contained' disabled={isLoading || isServing} type='submit'>
+            <LoadingButton
+                type="submit"
+                disabled={isLoading || isServing}
+                fullWidth
+                size={'large'}
+                variant="contained"
+                aria-label="Login"
+                loading={isServing}
+            >
                 تأكيد الحجز
-            </Button>
+            </LoadingButton>
+
         </Grid >
     )
 }

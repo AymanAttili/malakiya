@@ -10,6 +10,8 @@ import theme from "./theme"
 import Dashboard from "./pages/Dashboard"
 import { useEffect } from "react"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider"
+import Login from "./pages/Login";
+import Admin from "./pages/Admin";
 
 function App() {
   useEffect(() => {
@@ -22,8 +24,8 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="" element={<Dashboard />} />
-              {/* <Route path="admin" element={<Admin />} />
-              <Route path="login" element={<Login />} /> */}
+              <Route path="admin" element={<Admin />} />
+              <Route path="login" element={<Login />} />
               <Route path="/*" element={<Navigate replace to='/' />} />
             </Routes>
           </BrowserRouter>

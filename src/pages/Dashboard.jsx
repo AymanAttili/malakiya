@@ -9,6 +9,7 @@ import img5 from '../images/img5.png'
 import img4 from '../images/img4.png'
 import ReservationForm from "./ReservationForm";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -119,7 +120,6 @@ function Dashboard() {
                     </Grid>
 
                     <ReservationForm />
-
                 </Container >
             </Grid>
             <Grid container size={12} bgcolor={'third.main'} color={'white'} padding={4} marginTop={10}>
@@ -162,6 +162,7 @@ function Dashboard() {
                         <FaMapMarkerAlt fontSize={32} />
                     </Grid>
                 </Grid>
+
 
             </Grid>
         </Grid >
