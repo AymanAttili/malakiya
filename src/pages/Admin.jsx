@@ -27,9 +27,10 @@ function Admin() {
         return <Navigate replace to='/login' />
     return (
         <Grid container flexDirection={'column'} width={'100dvw'} height={'100dvh'} color={'primary.main'}>
-            <Grid container flexDirection={'row'} position={'absolute'}
+            <Grid container flexDirection={'row'}
                 justifyContent={'space-between'}
-                top={0} size={12} paddingY={2} paddingX={4} spacing={{ md: 8, lg: 12 }} bgcolor={alpha(theme.palette.secondary.main, 0.85)} >
+                alignItems={'center'}
+                size={12} paddingY={2} paddingX={4} spacing={{ md: 8, lg: 12 }} bgcolor={alpha(theme.palette.secondary.main, 0.85)} >
                 <Typography variant="h5" >
                     القاعة الملكية
                 </Typography>
