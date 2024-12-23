@@ -1,18 +1,29 @@
-import { alpha, Box, Button, Container, Grid2 as Grid, Typography } from "@mui/material"
+import { alpha, Box, Button, Container, Grid2 as Grid, IconButton, Menu, MenuItem, Typography } from "@mui/material"
 import { BsFacebook, BsInstagram, BsWhatsapp } from "react-icons/bs";
 import { FaMapMarkerAlt } from "react-icons/fa";
-
+import MenuIcon from '@mui/icons-material/Menu';
 
 import theme from "../theme"
 import img1 from '../images/img1.png'
 import img5 from '../images/img5.png'
 import img4 from '../images/img4.png'
 import ReservationForm from "./ReservationForm";
+import { useState } from "react";
 
 function Dashboard() {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
     return (
         <Grid container flexDirection={'column'} size={12} minHeight={'100dvh'} alignItems={'center'} color={'primary.main'}>
-            <Grid container flexDirection={'row'} position={'absolute'} top={0} size={12} paddingY={2} paddingX={4} spacing={{ sm: 4, md: 8, lg: 12 }} bgcolor={alpha(theme.palette.secondary.main, 0.85)} >
+            <Grid container flexDirection={'row'} position={'absolute'}
+                justifyContent={{ xs: 'space-between', sm: 'start' }}
+                top={0} size={12} paddingY={2} paddingX={4} spacing={{ md: 8, lg: 12 }} bgcolor={alpha(theme.palette.secondary.main, 0.85)} >
                 <Typography variant="h5" >
                     القاعة الملكية
                 </Typography>
@@ -30,6 +41,30 @@ function Dashboard() {
                         تواصل معنا
                     </Button>
                 </Grid>
+                <IconButton
+                    id="basic-button"
+                    aria-controls={open ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={handleClick}
+                    sx={{ display: { xs: 'block', sm: 'none' }, padding: 0 }}
+                >
+                    <MenuIcon fontSize={'large'} color="primary" />
+                </IconButton>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }}
+                >
+                    <MenuItem onClick={handleClose}>الرئيسية</MenuItem>
+                    <MenuItem onClick={handleClose}>الحجوزات</MenuItem>
+                    <MenuItem onClick={handleClose}>الخدمات</MenuItem>
+                    <MenuItem onClick={handleClose}>تواصل معنا</MenuItem>
+                </Menu>
             </Grid>
 
             <Grid container size={12} flexDirection={'column'} alignItems={'center'}>

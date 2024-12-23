@@ -1,4 +1,27 @@
-export function getAvailableReservations(date) {
+import supabase from "./supabase";
 
-    return [{ id: 1, time: '12:00' }, { id: 2, time: '13:00' }, { id: 3, time: '13:00' }]
+export async function getPawnedReservations(date) {
+    let { data: reservations, error } = await supabase
+        .from('reservations')
+        .select('time')
+        .eq('date', date)
+
+    if (error) {
+        throw new Error("Reservations could not be loaded");
+    }
+    return reservations;
+}
+
+export async function reserveAPI(payload) {
+    const { data, error } = await supabase
+        .from('reservations')
+        .insert([
+            payload
+        ])
+        .select()
+
+    if (error) {
+        throw new Error("Reservations could not be loaded");
+    }
+    return data;
 }

@@ -1,31 +1,29 @@
-import { alpha, Box, Button, FormGroup, FormLabel, Grid2 as Grid, TextField, Typography } from '@mui/material'
+import { Box, Button, FormLabel, Grid2 as Grid, TextField, Typography } from '@mui/material'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import img6 from '../images/img6.png'
 import img7 from '../images/img7.png'
 import img8 from '../images/img8.png'
-import theme from "../theme"
+import { usePawnedReservations } from '../features/reservations/usePawnedReservations';
+import { useTimes } from '../features/times/useTimes';
+import { useReserve } from '../features/reservations/useReserve';
 
-
-const times = [
-    { id: 1, time: '12:00 AM', isAvailable: false },
-    { id: 2, time: '2:00 PM', isAvailable: true },
-    { id: 3, time: '4:00 PM', isAvailable: true },
-    { id: 4, time: '6:00 PM', isAvailable: true },
-    { id: 5, time: '8:00 PM', isAvailable: true },
-    { id: 6, time: '10:00 PM', isAvailable: true },
-]
 
 function ReservationForm() {
     const [selectedTime, setSelectedTime] = useState(null)
+    const [selectedDate, setSelectedDate] = useState(() => format(new Date(), 'yyyy-MM-dd'))
     const [selectedServices, setSelectedServices] = useState([]);
     const [name, setName] = useState('')
     const [number, setNumber] = useState('')
     const [address, setAddress] = useState('')
     const [email, setEmail] = useState('')
-
     const [error, setError] = useState('');
+
+    const { pawnedReservations, isError, isLoading, refetch } = usePawnedReservations(selectedDate);
+    const { reserve, isError: isErrorServing, error: errorServing, isLoading: isServing } = useReserve();
+
+    const { times } = useTimes(pawnedReservations)
 
     const isSelected = (service) => {
         return selectedServices.indexOf(service) !== -1;
@@ -46,16 +44,42 @@ function ReservationForm() {
         setSelectedServices(arr => arr.filter((item) => item != service));
     }
 
-    const handleDateChange = (e) => {
-        const formattedDate = format(e.$d, 'dd/MM/yyyy');
-        console.log(formattedDate);
+    const handleDateChange = async (e) => {
+        const formattedDate = format(e.$d, 'yyyy-MM-dd');
+        setSelectedDate(formattedDate);
+        setSelectedTime(null)
     }
 
-    const handleSubmit = (e) => {
+    const resetForm = () => {
+        setSelectedTime(null);
+        setAddress('')
+        setEmail('')
+        setError('')
+        setName('')
+        setNumber('')
+        setSelectedServices([])
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
         setError(() => '')
         if (selectedTime === null)
             setError(() => 'من فضلك اختر وقتاً للحجز')
+
+        const payload = {
+            name,
+            email,
+            number,
+            address,
+            date: selectedDate,
+            time: selectedTime,
+            services: selectedServices
+        }
+        await reserve(payload)
+
+        if (!isErrorServing)
+            resetForm();
+
     }
 
     return (
@@ -85,7 +109,7 @@ function ReservationForm() {
                     {
                         times.map((time) =>
                             <Button key={time.id}
-                                variant={selectedTime === time.time ? 'contained' : 'outlined'}
+                                variant={selectedTime === time.val ? 'contained' : 'outlined'}
                                 disabled={!time.isAvailable}
                                 size={'small'}
                                 sx={{
@@ -93,7 +117,7 @@ function ReservationForm() {
                                     width: 80,
                                     textDecoration: !time.isAvailable ? 'line-through' : ''
                                 }}
-                                onClick={() => setSelectedTime(time.time)}
+                                onClick={() => setSelectedTime(time.val)}
                             >
                                 {time.time}
                             </Button>
@@ -195,7 +219,7 @@ function ReservationForm() {
                     {error}
                 </Typography>
             }
-            <Button size={'large'} variant='contained' type='submit'>
+            <Button size={'large'} variant='contained' disabled={isLoading || isServing} type='submit'>
                 تأكيد الحجز
             </Button>
         </Grid >
