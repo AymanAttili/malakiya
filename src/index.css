@@ -8,3 +8,7 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+
+.link{
+  transition: 4s;
+}

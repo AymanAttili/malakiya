@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { LoadingButton } from '@mui/lab';
 
 
-function ReservationForm() {
+function ReservationForm({ refs }) {
     const today = useRef(dayjs())
 
     const [selectedTime, setSelectedTime] = useState(null)
@@ -89,11 +89,11 @@ function ReservationForm() {
 
     return (
         <Grid component='form' onSubmit={handleSubmit} container size={12} flexDirection={'column'} alignItems={'center'} spacing={5} id='reservations'>
-            <Typography variant='h5' sx={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)', }}>
+            <Typography variant='h5'>
                 قم باختيار موعدك من الأوقات المتاحة:
             </Typography>
 
-            <Grid container size={12} flexDirection={'column'} alignItems={'center'} maxWidth={360} paddingY={2} border={2} borderRadius={8}>
+            <Grid container size={12} flexDirection={'column'} alignItems={'center'} maxWidth={360} paddingY={2} border={2} borderRadius={8} ref={refs?.reservations}>
                 <DateCalendar
                     minDate={today.current}
                     defaultValue={today.current}
@@ -137,7 +137,7 @@ function ReservationForm() {
                 </Grid>
             </Grid>
 
-            <Grid container flexDirection={'column'} alignItems={'center'} gap={8} paddingY={3}>
+            <Grid container flexDirection={'column'} alignItems={'center'} gap={8} paddingY={3} ref={refs?.services}>
                 <Typography variant='h5' sx={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
                     قم باختيار الخدمات
                 </Typography>

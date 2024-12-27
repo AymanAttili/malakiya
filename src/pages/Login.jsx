@@ -25,7 +25,6 @@ function Login() {
 
         await login(data)
     }
-    console.log(isAuthenticated);
 
     if (isAuthenticated)
         return <Navigate replace to={'/admin'} />

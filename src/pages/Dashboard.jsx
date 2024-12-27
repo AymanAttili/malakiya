@@ -8,12 +8,16 @@ import img1 from '../images/img1.png'
 import img5 from '../images/img5.png'
 import img4 from '../images/img4.png'
 import ReservationForm from "./ReservationForm";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
 
 function Dashboard() {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const main = useRef(null)
+    const reservations = useRef(null)
+    const services = useRef(null)
+    const contactUs = useRef(null)
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -30,16 +34,16 @@ function Dashboard() {
                     القاعة الملكية
                 </Typography>
                 <Grid container flexDirection={'row'} justifyContent={'space-between'} display={{ xs: 'none', sm: 'flex' }}>
-                    <Button>
+                    <Button onClick={() => main.current?.scrollIntoView({ behavior: 'smooth' })} >
                         الرئيسية
                     </Button>
-                    <Button>
+                    <Button onClick={() => reservations.current?.scrollIntoView({ behavior: 'smooth' })} >
                         الحجوزات
                     </Button>
-                    <Button>
+                    <Button onClick={() => services.current?.scrollIntoView({ behavior: 'smooth' })} >
                         الخدمات
                     </Button>
-                    <Button>
+                    <Button onClick={() => contactUs.current?.scrollIntoView({ behavior: 'smooth' })} >
                         تواصل معنا
                     </Button>
                 </Grid>
@@ -62,10 +66,26 @@ function Dashboard() {
                         'aria-labelledby': 'basic-button',
                     }}
                 >
-                    <MenuItem onClick={handleClose}>الرئيسية</MenuItem>
-                    <MenuItem onClick={handleClose}>الحجوزات</MenuItem>
-                    <MenuItem onClick={handleClose}>الخدمات</MenuItem>
-                    <MenuItem onClick={handleClose}>تواصل معنا</MenuItem>
+                    <MenuItem onClick={() => {
+                        main.current?.scrollIntoView({ behavior: 'smooth' });
+                        handleClose()
+                    }
+                    }>الرئيسية</MenuItem>
+                    <MenuItem onClick={() => {
+                        reservations.current?.scrollIntoView({ behavior: 'smooth' });
+                        handleClose()
+                    }
+                    }>الحجوزات</MenuItem>
+                    <MenuItem onClick={() => {
+                        services.current?.scrollIntoView({ behavior: 'smooth' });
+                        handleClose()
+                    }
+                    }>الخدمات</MenuItem>
+                    <MenuItem onClick={() => {
+                        contactUs.current?.scrollIntoView({ behavior: 'smooth' });
+                        handleClose()
+                    }
+                    }>تواصل معنا</MenuItem>
                 </Menu>
             </Grid>
 
@@ -73,16 +93,18 @@ function Dashboard() {
                 <Box width={'100%'} height={600} >
                     <img src={img1} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </Box>
-                <Button variant="outlined" sx={{ marginTop: -40, marginBottom: 40, fontSize: 24, borderColor: 'white', color: "white", bgcolor: alpha(theme.palette.primary.main, 0.8) }}>
+                <Button variant="outlined" sx={{ marginTop: -40, marginBottom: 40, fontSize: 24, borderColor: 'white', color: "white", bgcolor: alpha(theme.palette.primary.main, 0.8) }}
+                    onClick={() => reservations.current?.scrollIntoView({ behavior: 'smooth' })}
+                >
                     احجز عرسك الآن!
                 </Button>
             </Grid>
 
 
-            <Grid container size={12} flexDirection={'column'} spacing={10} padding={2}>
+            <Grid container size={12} flexDirection={'column'} spacing={10} padding={2} ref={main}>
                 <Container maxWidth={'md'}>
                     <Grid container size={12} flexDirection={'column'} spacing={5}>
-                        <Typography maxWidth={500} sx={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)', }}>
+                        <Typography maxWidth={500}>
                             إختيار التفاصيل مهم جداً ، لذلك نقدم لك العديد من الإقتراحات لتناسبك في يوم زفافك.
                         </Typography>
                         <Box sx={{
@@ -120,25 +142,28 @@ function Dashboard() {
                         </Box>
                     </Grid>
 
-                    <ReservationForm />
+                    <ReservationForm refs={{
+                        reservations,
+                        services
+                    }} />
                 </Container >
             </Grid>
-            <Grid container size={12} bgcolor={'third.main'} color={'white'} padding={4} marginTop={10}>
+            <Grid container size={12} bgcolor={'third.main'} color={'white'} padding={4} marginTop={10} ref={contactUs}>
 
-                <Grid container size={6} flexDirection={'column'} spacing={1}>
-                    <Typography variant="h5" sx={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)', }}>
+                <Grid container size={6} flexDirection={'column'} spacing={1} >
+                    <Typography variant="h5">
                         القاعة الملكية
                     </Typography>
-                    <Typography fontSize={14} >
+                    <Typography fontSize={14} sx={{ cursor: 'pointer' }} onClick={() => main?.current.scrollIntoView({ behavior: 'smooth' })}>
                         ● الرئيسية
                     </Typography>
-                    <Typography fontSize={14}>
+                    <Typography fontSize={14} sx={{ cursor: 'pointer' }} onClick={() => reservations?.current.scrollIntoView({ behavior: 'smooth' })}>
                         ● الحجوزات
                     </Typography>
-                    <Typography fontSize={14}>
+                    <Typography fontSize={14} sx={{ cursor: 'pointer' }} onClick={() => services?.current.scrollIntoView({ behavior: 'smooth' })}>
                         ● الخدمات
                     </Typography>
-                    <Typography fontSize={14}>
+                    <Typography fontSize={14} sx={{ cursor: 'pointer' }} onClick={() => contactUs?.current.scrollIntoView({ behavior: 'smooth' })}>
                         ● تواصل معنا
                     </Typography>
                 </Grid>
@@ -158,7 +183,7 @@ function Dashboard() {
 
                     <Grid container justifyContent={'end'} spacing={2} alignItems={'end'}>
                         <Typography>
-                            0599921549
+                            طولكرم - شارع نابلس
                         </Typography>
                         <FaMapMarkerAlt fontSize={32} />
                     </Grid>
