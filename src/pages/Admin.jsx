@@ -159,8 +159,17 @@ function Admin() {
                                         </TableRow>
                                     )
                                 }
+
+
                             </TableBody>
+
                         </Table>
+                        {
+                            reservations?.length === 0 &&
+                            <Typography variant="h6" textAlign={'center'} paddingTop={3}>
+                                لا يوجد حجوزات حالية...
+                            </Typography>
+                        }
                     </TableContainer>
                 </Grid>
             </Grid>
