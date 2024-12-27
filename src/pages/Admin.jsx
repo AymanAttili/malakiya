@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom"
 import { useAdmin } from "../features/auth/useAdmin"
-import { alpha, Button, Checkbox, Chip, FormControlLabel, Grid2 as Grid, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { alpha, Button, Checkbox, Chip, FormControlLabel, Grid2 as Grid, IconButton, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 import theme from "../theme"
 import Swal from "sweetalert2"
 import { useLogout } from "../features/auth/useLogout"
@@ -9,6 +9,7 @@ import { useState } from "react"
 import SpinnerLoader from "../ui/SpinnerLoader"
 import { useDispatchReservation } from "../features/reservations/useDispatchReservations"
 import { serviceName } from "../Enums/services"
+import { Delete } from "@mui/icons-material"
 
 function Admin() {
     const { isAuthenticated } = useAdmin()
@@ -32,13 +33,13 @@ function Admin() {
             logout();
     }
 
-    const handleApprove = async (id) => {
+    const handleApprove = async (id) => { // Fixing 
         const confirm = await Swal.fire({
             title: 'هل تريد تأكيد الطلب؟',
             confirmButtonText: 'موافق',
             cancelButtonText: 'لاحقاً',
             showCancelButton: true,
-            confirmButtonColor: 'green'
+            confirmButtonColor: 'green',
         })
 
         if (confirm)
@@ -50,7 +51,7 @@ function Admin() {
             confirmButtonText: 'موافق',
             cancelButtonText: 'لاحقاً',
             showCancelButton: true,
-            confirmButtonColor: '#d32f2f'
+            confirmButtonColor: '#d32f2f',
         })
 
         if (confirm)
@@ -78,41 +79,44 @@ function Admin() {
                 </Button>
             </Grid>
 
-            <Grid container flexDirection={'column'} padding={{ sm: 2 }} alignItems={'center'}>
-                <Grid container size={12} justifyContent={'end'}>
+            <Grid container flexDirection={'column'} padding={{ sm: 2 }} alignItems={'center'} marginTop={5}>
+                <Grid container size={12} justifyContent={'end'} paddingY={2}>
                     <FormControlLabel labelPlacement={'start'} control={
-                        <Checkbox checked={notApproved} onChange={() => setNotApproved(val => !val)} />
-                    } label="إظهار غير المؤكدة فقط" />
+                        <Checkbox checked={!notApproved} onChange={() => setNotApproved(val => !val)} />
+                    } label="جميع الحجوزات" />
                 </Grid>
 
                 <Grid container size={12} flexDirection={'column'} >
-                    <TableContainer sx={{ maxWidth: '100dvw', maxHeight: '80dvh', overflow: 'auto' }} >
+                    <TableContainer sx={{ maxWidth: '100dvw', maxHeight: '70dvh', overflow: 'auto' }} >
                         <Table stickyHeader >
                             <TableHead >
                                 <TableRow >
-                                    <TableCell sx={{ textAlign: 'right', color: 'primary.main', bgcolor: 'secondary.main' }} >
+                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }} >
                                         الاسم
                                     </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'primary.main', bgcolor: 'secondary.main' }} >
+                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }} >
                                         اليوم
                                     </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'primary.main', bgcolor: 'secondary.main' }}>
+                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
                                         الساعة
                                     </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'primary.main', bgcolor: 'secondary.main' }}>
+                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
                                         الخدمات المضافة
                                     </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'primary.main', bgcolor: 'secondary.main' }}>
+                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
                                         رقم الهاتف
                                     </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'primary.main', bgcolor: 'secondary.main' }}>
+                                    {/* <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
                                         العنوان
                                     </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'primary.main', bgcolor: 'secondary.main' }}>
+                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}> // TODO: show all info modal
                                         الايميل
-                                    </TableCell>
-                                    <TableCell sx={{ textAlign: 'center', color: 'primary.main', bgcolor: 'secondary.main' }}>
+                                    </TableCell> */}
+                                    <TableCell sx={{ textAlign: 'center', color: 'white', bgcolor: 'primary.main' }}>
                                         حالة الطلب
+                                    </TableCell>
+                                    <TableCell sx={{ textAlign: 'center', color: 'white', bgcolor: 'primary.main' }}>
+
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -138,12 +142,12 @@ function Admin() {
                                             <TableCell sx={{ textAlign: 'right' }}>
                                                 {res.number}
                                             </TableCell>
-                                            <TableCell sx={{ textAlign: 'right' }}>
+                                            {/* <TableCell sx={{ textAlign: 'right' }}>
                                                 {res.address}
                                             </TableCell>
                                             <TableCell sx={{ textAlign: 'right' }}>
                                                 {res.email}
-                                            </TableCell>
+                                            </TableCell> */}
                                             <TableCell >
                                                 <Grid container justifyContent={'center'} spacing={1}>
                                                     {
@@ -155,6 +159,11 @@ function Admin() {
                                                             </>
                                                     }
                                                 </Grid>
+                                            </TableCell>
+                                            <TableCell>
+                                                <IconButton>
+                                                    <Delete color="error" onClick={() => handleDelete(res.id)} />
+                                                </IconButton>
                                             </TableCell>
                                         </TableRow>
                                     )

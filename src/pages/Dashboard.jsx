@@ -1,4 +1,7 @@
-import { alpha, Box, Button, Container, Grid2 as Grid, IconButton, Menu, MenuItem, Typography } from "@mui/material"
+import { alpha, Box, Button, Container, Grid2 as Grid, IconButton, Link, Menu, MenuItem, Typography } from "@mui/material"
+import { Link as RouterLink } from 'react-router-dom'
+
+
 import { BsFacebook, BsInstagram, BsWhatsapp } from "react-icons/bs";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import MenuIcon from '@mui/icons-material/Menu';
@@ -71,6 +74,11 @@ function Dashboard() {
                         handleClose()
                     }
                     }>الرئيسية</MenuItem>
+                    <MenuItem>
+                        <Link component={RouterLink} to={'/admin'} underline={'none'} color="black">
+                            تسجيل الدخول
+                        </Link>
+                    </MenuItem>
                     <MenuItem onClick={() => {
                         reservations.current?.scrollIntoView({ behavior: 'smooth' });
                         handleClose()
@@ -89,11 +97,12 @@ function Dashboard() {
                 </Menu>
             </Grid>
 
+            {/* نصغر الصورة */}
             <Grid container size={12} flexDirection={'column'} alignItems={'center'}>
-                <Box width={'100%'} height={600} >
+                <Box width={'100%'} height={400} >
                     <img src={img1} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </Box>
-                <Button variant="outlined" sx={{ marginTop: -40, marginBottom: 40, fontSize: 24, borderColor: 'white', color: "white", bgcolor: alpha(theme.palette.primary.main, 0.8) }}
+                <Button variant="outlined" sx={{ marginTop: -25, marginBottom: 25, fontSize: 24, color: "white", bgcolor: alpha(theme.palette.primary.main, 0.6) }}
                     onClick={() => reservations.current?.scrollIntoView({ behavior: 'smooth' })}
                 >
                     احجز عرسك الآن!
@@ -148,7 +157,7 @@ function Dashboard() {
                     }} />
                 </Container >
             </Grid>
-            <Grid container size={12} bgcolor={'third.main'} color={'white'} padding={4} marginTop={10} ref={contactUs}>
+            <Grid container size={12} bgcolor={'primary.main'} color={'white'} padding={{ xs: 3, sm: 4 }} marginTop={10} ref={contactUs}>
 
                 <Grid container size={6} flexDirection={'column'} spacing={1} >
                     <Typography variant="h5">
@@ -169,23 +178,23 @@ function Dashboard() {
                 </Grid>
 
 
-                <Grid container size={6} flexDirection={'column'} alignItems={'end'} justifyContent={'space-between'}>
-                    <Grid container justifyContent={'end'} spacing={4} alignItems={'end'}>
-                        <BsInstagram fontSize={32} />
-                        <BsFacebook fontSize={32} />
+                <Grid container size={6} flexDirection={'column'} alignItems={'end'} justifyContent={'start'} spacing={2}>
+                    <Grid container justifyContent={'end'} spacing={2} alignItems={'center'}>
+                        <BsInstagram fontSize={20} />
+                        <BsFacebook fontSize={20} />
                     </Grid>
                     <Grid container justifyContent={'end'} spacing={2} alignItems={'end'}>
                         <Typography>
                             0599921549
                         </Typography>
-                        <BsWhatsapp fontSize={32} />
+                        <BsWhatsapp fontSize={20} />
                     </Grid>
 
                     <Grid container justifyContent={'end'} spacing={2} alignItems={'end'}>
-                        <Typography>
+                        <Typography fontSize={10}>
                             طولكرم - شارع نابلس
                         </Typography>
-                        <FaMapMarkerAlt fontSize={32} />
+                        <FaMapMarkerAlt fontSize={20} />
                     </Grid>
                 </Grid>
 

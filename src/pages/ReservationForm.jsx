@@ -24,6 +24,7 @@ function ReservationForm({ refs }) {
     const [address, setAddress] = useState('')
     const [email, setEmail] = useState('')
     const [error, setError] = useState('');
+    const [notes, setNotes] = useState('');
 
     const { pawnedReservations, isError, isLoading, refetch } = usePawnedReservations(selectedDate);
     const { reserve, isError: isErrorServing, error: errorServing, isLoading: isServing } = useReserve();
@@ -62,6 +63,7 @@ function ReservationForm({ refs }) {
         setError('')
         setName('')
         setNumber('')
+        setNotes('')
         setSelectedServices([])
     }
 
@@ -76,6 +78,7 @@ function ReservationForm({ refs }) {
             email,
             number,
             address,
+            notes,
             date: selectedDate,
             time: selectedTime,
             services: selectedServices
@@ -88,12 +91,13 @@ function ReservationForm({ refs }) {
     }
 
     return (
-        <Grid component='form' onSubmit={handleSubmit} container size={12} flexDirection={'column'} alignItems={'center'} spacing={5} id='reservations'>
-            <Typography variant='h5'>
-                قم باختيار موعدك من الأوقات المتاحة:
-            </Typography>
+        <Grid component='form' onSubmit={handleSubmit} container size={12} flexDirection={'column'} alignItems={'center'} spacing={5} id='reservations' border={2} borderRadius={8} padding={2}>
 
-            <Grid container size={12} flexDirection={'column'} alignItems={'center'} maxWidth={360} paddingY={2} border={2} borderRadius={8} ref={refs?.reservations}>
+
+            <Grid container size={12} flexDirection={'column'} alignItems={'center'} maxWidth={360} paddingY={2} ref={refs?.reservations}>
+                <Typography fontSize={14} textAlign={'center'} padding={2} borderBottom={2}>
+                    قم باختيار موعدك من الأوقات المتاحة
+                </Typography>
                 <DateCalendar
                     minDate={today.current}
                     defaultValue={today.current}
@@ -138,7 +142,7 @@ function ReservationForm({ refs }) {
             </Grid>
 
             <Grid container flexDirection={'column'} alignItems={'center'} gap={8} paddingY={3} ref={refs?.services}>
-                <Typography variant='h5' sx={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
+                <Typography variant='h5'>
                     قم باختيار الخدمات
                 </Typography>
 
@@ -148,10 +152,10 @@ function ReservationForm({ refs }) {
                         boxShadow: isSelected(0) ? 8 : 0
                     }}
                     onClick={() => handleServiceClick(0)}>
-                    <Typography variant='h5' sx={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
+                    <Typography variant='h5'>
                         تصوير
                     </Typography>
-                    <Box width={240} height={240} borderRadius={8} overflow={'clip'}>
+                    <Box width={180} height={180} borderRadius={8} overflow={'clip'}>
                         <img src={img6} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </Box>
                 </Grid>
@@ -162,10 +166,10 @@ function ReservationForm({ refs }) {
                         boxShadow: isSelected(1) ? 8 : 0
                     }}
                 >
-                    <Typography variant='h5' sx={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
+                    <Typography variant='h5' >
                         ضيافة
                     </Typography>
-                    <Box width={240} height={240} borderRadius={8} overflow={'clip'}>
+                    <Box width={180} height={180} borderRadius={8} overflow={'clip'}>
                         <img src={img7} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </Box>
                 </Grid>
@@ -176,10 +180,10 @@ function ReservationForm({ refs }) {
                         boxShadow: isSelected(2) ? 8 : 0
                     }}
                 >
-                    <Typography variant='h5' sx={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
+                    <Typography variant='h5' >
                         إضاءة وتزيين
                     </Typography>
-                    <Box width={240} height={240} borderRadius={8} overflow={'clip'}>
+                    <Box width={180} height={180} borderRadius={8} overflow={'clip'}>
                         <img src={img8} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </Box>
                 </Grid>
@@ -187,9 +191,9 @@ function ReservationForm({ refs }) {
 
             <Grid container flexDirection={'column'} alignItems={'center'} >
                 <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                    <FormLabel htmlFor='name'>
+                    <Typography component={FormLabel} htmlFor='name' color='primary.main'>
                         الاسم
-                    </FormLabel>
+                    </Typography>
                     <TextField id='name' type='text' required
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -197,9 +201,9 @@ function ReservationForm({ refs }) {
                     />
                 </Grid>
                 <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                    <FormLabel htmlFor='address'>
+                    <Typography component={FormLabel} htmlFor='address' color='primary.main'>
                         العنوان
-                    </FormLabel>
+                    </Typography>
                     <TextField id='address' type='text' required
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
@@ -207,9 +211,9 @@ function ReservationForm({ refs }) {
                     />
                 </Grid>
                 <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                    <FormLabel htmlFor='number'>
+                    <Typography component={FormLabel} htmlFor='number' color='primary.main'>
                         الرقم
-                    </FormLabel>
+                    </Typography>
                     <MuiTelInput
                         id='number' required
                         value={number}
@@ -219,12 +223,23 @@ function ReservationForm({ refs }) {
 
                 </Grid>
                 <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                    <FormLabel htmlFor='email'>
+                    <Typography component={FormLabel} htmlFor='email' color='primary.main'>
                         الايميل
-                    </FormLabel>
+                    </Typography>
                     <TextField id='email' type={'email'} required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                    <Typography component={FormLabel} htmlFor='email' color='primary.main'>
+                        ملاحظات
+                    </Typography>
+                    <TextField id='notes' type={'text'} required multiline
+                        rows={4}
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
                         fullWidth
                     />
                 </Grid>
@@ -238,7 +253,6 @@ function ReservationForm({ refs }) {
             <LoadingButton
                 type="submit"
                 disabled={isLoading || isServing}
-                fullWidth
                 size={'large'}
                 variant="contained"
                 aria-label="Login"
