@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import supabase from "./supabase";
 
 export async function getPawnedReservations(date) {
@@ -60,6 +61,42 @@ export async function getNotApprovedReservations(date) {
     }
     return reservations;
 }
+
+export async function getMonthReservations(month, year) {
+    const lower = `${year}/${month}/01`
+    let upper = `${year}/${month + 1}/01`
+
+    if (month == 12)
+        upper = `${year + 1}/1/01`
+    let { data: reservations, error } = await supabase
+        .from('reservations')
+        .select('*')
+        .order('date', { ascending: true })
+        .order('time', { ascending: true })
+        .gte('date', lower)
+        .lt('date', upper)
+
+    if (error) {
+        throw new Error("Reservations could not be loaded");
+    }
+    return reservations;
+}
+
+export async function getDayReservations(date) {
+    date = format(date, 'yyyy/MM/dd');
+    let { data: reservations, error } = await supabase
+        .from('reservations')
+        .select('*')
+        .order('time', { ascending: true })
+        .eq('date', date)
+
+
+    if (error) {
+        throw new Error("Reservations could not be loaded");
+    }
+    return reservations;
+}
+
 
 export async function approveReservation(id) {
     const { error } = await supabase

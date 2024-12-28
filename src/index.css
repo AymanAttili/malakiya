@@ -9,6 +9,11 @@ body {
   font-style: normal;
 }
 
-.link{
-  transition: 4s;
+a.active{
+  color: white;
+  background-color: #775236;
+}
+
+a.active:hover{
+  background-color: #93694a
 }

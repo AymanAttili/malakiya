@@ -7,6 +7,7 @@ export function usePawnedReservations(date) {
         queryFn: async () => {
             return await getPawnedReservations(date)
         },
+        refetchInterval: 60 * 1000,
 
         throwOnError: true
     });

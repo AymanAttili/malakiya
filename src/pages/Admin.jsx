@@ -1,37 +1,21 @@
 import { Navigate } from "react-router-dom"
 import { useAdmin } from "../features/auth/useAdmin"
-import { alpha, Button, Checkbox, Chip, FormControlLabel, Grid2 as Grid, IconButton, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
-import theme from "../theme"
+import { Checkbox, Chip, FormControlLabel, Grid2 as Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 import Swal from "sweetalert2"
-import { useLogout } from "../features/auth/useLogout"
 import { useReservationsAdmin } from "../features/reservations/useReservationsAdmin"
 import { useState } from "react"
 import SpinnerLoader from "../ui/SpinnerLoader"
 import { useDispatchReservation } from "../features/reservations/useDispatchReservations"
 import { serviceName } from "../Enums/services"
 import { Delete } from "@mui/icons-material"
+import Navbar from "../ui/Navbar"
 
 function Admin() {
     const { isAuthenticated } = useAdmin()
-    const { logout } = useLogout();
     const [notApproved, setNotApproved] = useState(true);
-    const { reservations, isLoading } = useReservationsAdmin(notApproved)
+    const { reservations, isLoading } = useReservationsAdmin({ action: notApproved ? 'fetchNotApprovedOnly' : 'fetchAllUpcoming' })
     const { reservationDispatch } = useDispatchReservation();
 
-    console.table(reservations)
-    const handleLogout = async () => {
-        const confirm = await Swal.fire({
-            title: 'تسجيل الخروج',
-            text: 'هل أنت متأكد أنك تريد تسجيل الخروج؟',
-            confirmButtonText: 'نعم',
-            confirmButtonColor: '#775236',
-            cancelButtonText: 'لا',
-            showCancelButton: true,
-        })
-
-        if (confirm.isConfirmed)
-            logout();
-    }
 
     const handleApprove = async (id) => { // Fixing 
         const confirm = await Swal.fire({
@@ -62,22 +46,10 @@ function Admin() {
     if (!isAuthenticated)
         return <Navigate replace to='/login' />
 
-    if (isLoading)
-        return <SpinnerLoader />
 
     return (
         <Grid container flexDirection={'column'} minHeight={'100dvh'} color={'primary.main'}>
-            <Grid container flexDirection={'row'}
-                justifyContent={'space-between'}
-                alignItems={'center'}
-                size={12} paddingY={2} paddingX={4} spacing={{ md: 8, lg: 12 }} bgcolor={alpha(theme.palette.secondary.main, 0.85)} >
-                <Typography variant="h5" >
-                    القاعة الملكية
-                </Typography>
-                <Button variant="outlined" onClick={handleLogout}>
-                    تسجيل الخروج
-                </Button>
-            </Grid>
+            <Navbar />
 
             <Grid container flexDirection={'column'} padding={{ sm: 2 }} alignItems={'center'} marginTop={{ xs: 5, sm: 2 }}>
                 <Grid container size={12} justifyContent={'end'} paddingY={2}>
@@ -85,102 +57,94 @@ function Admin() {
                         <Checkbox checked={!notApproved} onChange={() => setNotApproved(val => !val)} />
                     } label="جميع الحجوزات" />
                 </Grid>
+                {
+                    isLoading ? <SpinnerLoader />
+                        :
 
-                <Grid container size={12} flexDirection={'column'} >
-                    <TableContainer sx={{ maxWidth: '100dvw', maxHeight: '70dvh', overflow: 'auto' }} >
-                        <Table stickyHeader >
-                            <TableHead >
-                                <TableRow >
-                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }} >
-                                        الاسم
-                                    </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }} >
-                                        اليوم
-                                    </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
-                                        الساعة
-                                    </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
-                                        الخدمات المضافة
-                                    </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
-                                        رقم الهاتف
-                                    </TableCell>
-                                    {/* <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
-                                        العنوان
-                                    </TableCell>
-                                    <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}> // TODO: show all info modal
-                                        الايميل
-                                    </TableCell> */}
-                                    <TableCell sx={{ textAlign: 'center', color: 'white', bgcolor: 'primary.main' }}>
-                                        حالة الطلب
-                                    </TableCell>
-                                    <TableCell sx={{ textAlign: 'center', color: 'white', bgcolor: 'primary.main' }}>
+                        <Grid container size={12} flexDirection={'column'} >
+                            <TableContainer sx={{ maxWidth: '100dvw', maxHeight: '70dvh', overflow: 'auto' }} >
+                                <Table stickyHeader >
+                                    <TableHead >
+                                        <TableRow >
+                                            <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }} >
+                                                الاسم
+                                            </TableCell>
+                                            <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }} >
+                                                اليوم
+                                            </TableCell>
+                                            <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
+                                                الساعة
+                                            </TableCell>
+                                            <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
+                                                الخدمات المضافة
+                                            </TableCell>
+                                            <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
+                                                رقم الهاتف
+                                            </TableCell>
+                                            <TableCell sx={{ textAlign: 'center', color: 'white', bgcolor: 'primary.main' }}>
+                                                حالة الطلب
+                                            </TableCell>
+                                            <TableCell sx={{ textAlign: 'center', color: 'white', bgcolor: 'primary.main' }}>
 
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {
-                                    reservations?.map((res) =>
-                                        <TableRow key={res.id}>
-                                            <TableCell sx={{ textAlign: 'right' }}>
-                                                {res.name}
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'right' }}>
-                                                {res.date}
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'right' }}>
-                                                {res.time}
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'right' }}>
-                                                <table>
-                                                    {res.services?.map((service) => <li key={service}>{serviceName[service]}</li>)}
-                                                </table>
-
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'right' }}>
-                                                {res.number}
-                                            </TableCell>
-                                            {/* <TableCell sx={{ textAlign: 'right' }}>
-                                                {res.address}
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'right' }}>
-                                                {res.email}
-                                            </TableCell> */}
-                                            <TableCell >
-                                                <Grid container justifyContent={'center'} spacing={1}>
-                                                    {
-                                                        res.approved ? <Chip color="success" label='تم التأكيد' />
-                                                            :
-                                                            <>
-                                                                <Chip color="primary" clickable label='مراجعة' onClick={() => handleApprove(res.id)} />
-                                                                <Chip color="error" clickable label='رفض' onClick={() => handleDelete(res.id)} />
-                                                            </>
-                                                    }
-                                                </Grid>
-                                            </TableCell>
-                                            <TableCell>
-                                                <IconButton>
-                                                    <Delete color="error" onClick={() => handleDelete(res.id)} />
-                                                </IconButton>
                                             </TableCell>
                                         </TableRow>
-                                    )
+                                    </TableHead>
+                                    <TableBody>
+                                        {
+                                            reservations?.map((res) =>
+                                                <TableRow key={res.id}>
+                                                    <TableCell sx={{ textAlign: 'right' }}>
+                                                        {res.name}
+                                                    </TableCell>
+                                                    <TableCell sx={{ textAlign: 'right' }}>
+                                                        {res.date}
+                                                    </TableCell>
+                                                    <TableCell sx={{ textAlign: 'right' }}>
+                                                        {res.time}
+                                                    </TableCell>
+                                                    <TableCell sx={{ textAlign: 'right' }}>
+                                                        <table>
+                                                            {res.services?.map((service) => <li key={service}>{serviceName[service]}</li>)}
+                                                        </table>
+
+                                                    </TableCell>
+                                                    <TableCell sx={{ textAlign: 'right' }}>
+                                                        {res.number}
+                                                    </TableCell>
+                                                    <TableCell >
+                                                        <Grid container justifyContent={'center'} spacing={1}>
+                                                            {
+                                                                res.approved ? <Chip color="success" label='تم التأكيد' />
+                                                                    :
+                                                                    <>
+                                                                        <Chip color="primary" clickable label='مراجعة' onClick={() => handleApprove(res.id)} />
+                                                                        <Chip color="error" clickable label='رفض' onClick={() => handleDelete(res.id)} />
+                                                                    </>
+                                                            }
+                                                        </Grid>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <IconButton onClick={() => handleDelete(res.id)} >
+                                                            <Delete color="error" />
+                                                        </IconButton>
+                                                    </TableCell>
+                                                </TableRow>
+                                            )
+                                        }
+
+
+                                    </TableBody>
+
+                                </Table>
+                                {
+                                    reservations?.length === 0 &&
+                                    <Typography variant="h6" textAlign={'center'} paddingTop={3}>
+                                        لا يوجد حجوزات حالية...
+                                    </Typography>
                                 }
-
-
-                            </TableBody>
-
-                        </Table>
-                        {
-                            reservations?.length === 0 &&
-                            <Typography variant="h6" textAlign={'center'} paddingTop={3}>
-                                لا يوجد حجوزات حالية...
-                            </Typography>
-                        }
-                    </TableContainer>
-                </Grid>
+                            </TableContainer>
+                        </Grid>
+                }
             </Grid>
         </Grid >
     )

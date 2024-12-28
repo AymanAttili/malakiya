@@ -12,6 +12,7 @@ import { useEffect } from "react"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider"
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
+import MonthReservations from "./pages/MonthReservations";
 
 function App() {
   useEffect(() => {
@@ -25,6 +26,7 @@ function App() {
             <Routes>
               <Route path="" element={<Dashboard />} />
               <Route path="admin" element={<Admin />} />
+              <Route path="monthly-report" element={<MonthReservations />} />
               <Route path="login" element={<Login />} />
               <Route path="/*" element={<Navigate replace to='/' />} />
             </Routes>

@@ -30,31 +30,28 @@ function Dashboard() {
     return (
         <Grid container flexDirection={'column'} size={12} minHeight={'100dvh'} alignItems={'center'} color={'primary.main'}>
             <Grid container flexDirection={'row'} position={'absolute'}
-                justifyContent={{ xs: 'space-between', sm: 'start' }}
+                justifyContent={{ xs: 'space-between' }}
                 alignItems={'center'}
-                top={0} size={12} paddingY={2} paddingX={4} spacing={{ md: 8, lg: 12 }} bgcolor={alpha(theme.palette.secondary.main, 0.85)} >
+                top={0} size={12} padding={2} spacing={{ sm: 1, md: 8, lg: 12 }} bgcolor={alpha(theme.palette.secondary.main, 0.85)} >
                 <Typography variant="h5" >
                     القاعة الملكية
                 </Typography>
                 <Grid container flexDirection={'row'} justifyContent={'space-between'} display={{ xs: 'none', sm: 'flex' }}>
-                    <Button onClick={() => main.current?.scrollIntoView({ behavior: 'smooth' })} >
-                        الرئيسية
-                    </Button>
-                    <Button onClick={() => reservations.current?.scrollIntoView({ behavior: 'smooth' })} >
+                    <Button size="small" onClick={() => reservations.current?.scrollIntoView({ behavior: 'smooth' })} >
                         الحجوزات
                     </Button>
-                    <Button onClick={() => services.current?.scrollIntoView({ behavior: 'smooth' })} >
+                    <Button size="small" onClick={() => services.current?.scrollIntoView({ behavior: 'smooth' })} >
                         الخدمات
                     </Button>
-                    <Button onClick={() => contactUs.current?.scrollIntoView({ behavior: 'smooth' })} >
+                    <Button size="small" onClick={() => contactUs.current?.scrollIntoView({ behavior: 'smooth' })} >
                         تواصل معنا
                     </Button>
-                    <Button>
-                        <Link component={RouterLink} to={'/admin'} underline={'none'} >
-                            تسجيل الدخول
-                        </Link>
-                    </Button>
                 </Grid>
+                <Button variant="outlined" size="small" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    <Link component={RouterLink} to={'/admin'} underline={'none'} >
+                        تسجيل الدخول
+                    </Link>
+                </Button>
                 <IconButton
                     id="basic-button"
                     aria-controls={open ? 'basic-menu' : undefined}
@@ -103,7 +100,7 @@ function Dashboard() {
             </Grid>
 
             <Grid container size={12} flexDirection={'column'} alignItems={'center'}>
-                <Box width={'100%'} height={400} >
+                <Box width={'100%'} height={{ xs: 400, sm: 500, md: 600 }} >
                     <img src={img1} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </Box>
                 <Button variant="outlined" sx={{ marginTop: -25, marginBottom: 25, fontSize: 24, color: "white", bgcolor: alpha(theme.palette.primary.main, 0.6) }}

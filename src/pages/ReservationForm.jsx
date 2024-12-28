@@ -113,9 +113,8 @@ function ReservationForm({ refs }) {
                             }
                         }}
                         onChange={handleDateChange}
-                    >
+                    />
 
-                    </DateCalendar>
                     <Typography>
                         الوقت
                     </Typography>
@@ -250,16 +249,16 @@ function ReservationForm({ refs }) {
                         {error}
                     </Typography>
                 }
-                <LoadingButton
-                    type="submit"
-                    disabled={isLoading || isServing}
-                    size={'large'}
-                    variant="contained"
-                    aria-label="Login"
-                    loading={isServing}
-                >
-                    تأكيد الحجز
-                </LoadingButton>
+                <Grid container justifyContent={'center'}>
+                    <LoadingButton
+                        type="submit"
+                        disabled={isLoading || isServing}
+                        variant="contained"
+                        loading={isServing}
+                    >
+                        تأكيد الحجز
+                    </LoadingButton>
+                </Grid>
             </Grid>
         </Grid >
     )
