@@ -49,6 +49,11 @@ function Dashboard() {
                     <Button onClick={() => contactUs.current?.scrollIntoView({ behavior: 'smooth' })} >
                         تواصل معنا
                     </Button>
+                    <Button>
+                        <Link component={RouterLink} to={'/admin'} underline={'none'} >
+                            تسجيل الدخول
+                        </Link>
+                    </Button>
                 </Grid>
                 <IconButton
                     id="basic-button"
@@ -97,7 +102,6 @@ function Dashboard() {
                 </Menu>
             </Grid>
 
-            {/* نصغر الصورة */}
             <Grid container size={12} flexDirection={'column'} alignItems={'center'}>
                 <Box width={'100%'} height={400} >
                     <img src={img1} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -108,7 +112,6 @@ function Dashboard() {
                     احجز عرسك الآن!
                 </Button>
             </Grid>
-
 
             <Grid container size={12} flexDirection={'column'} spacing={10} padding={2} ref={main}>
                 <Container maxWidth={'md'}>
@@ -197,7 +200,6 @@ function Dashboard() {
                         <FaMapMarkerAlt fontSize={20} />
                     </Grid>
                 </Grid>
-
 
             </Grid>
         </Grid >

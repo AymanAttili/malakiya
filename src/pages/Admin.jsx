@@ -42,7 +42,7 @@ function Admin() {
             confirmButtonColor: 'green',
         })
 
-        if (confirm)
+        if (confirm.isConfirmed)
             reservationDispatch({ action: 'approve', payload: { id } })
     }
     const handleDelete = async (id) => {
@@ -54,7 +54,7 @@ function Admin() {
             confirmButtonColor: '#d32f2f',
         })
 
-        if (confirm)
+        if (confirm.isConfirmed)
             reservationDispatch({ action: 'delete', payload: { id } })
 
     }
@@ -74,12 +74,12 @@ function Admin() {
                 <Typography variant="h5" >
                     القاعة الملكية
                 </Typography>
-                <Button variant="contained" onClick={handleLogout}>
+                <Button variant="outlined" onClick={handleLogout}>
                     تسجيل الخروج
                 </Button>
             </Grid>
 
-            <Grid container flexDirection={'column'} padding={{ sm: 2 }} alignItems={'center'} marginTop={5}>
+            <Grid container flexDirection={'column'} padding={{ sm: 2 }} alignItems={'center'} marginTop={{ xs: 5, sm: 2 }}>
                 <Grid container size={12} justifyContent={'end'} paddingY={2}>
                     <FormControlLabel labelPlacement={'start'} control={
                         <Checkbox checked={!notApproved} onChange={() => setNotApproved(val => !val)} />

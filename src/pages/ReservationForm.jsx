@@ -91,176 +91,176 @@ function ReservationForm({ refs }) {
     }
 
     return (
-        <Grid component='form' onSubmit={handleSubmit} container size={12} flexDirection={'column'} alignItems={'center'} spacing={5} id='reservations' border={2} borderRadius={8} padding={2}>
+        <Grid component='form' onSubmit={handleSubmit} container size={12} flexDirection={'column'} alignItems={'center'} spacing={5} id='reservations' >
+            <Grid container flexDirection={'column'} maxWidth={360} border={2} borderRadius={8} padding={2}>
 
-
-            <Grid container size={12} flexDirection={'column'} alignItems={'center'} maxWidth={360} paddingY={2} ref={refs?.reservations}>
-                <Typography fontSize={14} textAlign={'center'} padding={2} borderBottom={2}>
-                    قم باختيار موعدك من الأوقات المتاحة
-                </Typography>
-                <DateCalendar
-                    minDate={today.current}
-                    defaultValue={today.current}
-                    sx={{
-                        borderBottom: 2,
-                        width: 280
-                    }}
-                    slotProps={{
-                        calendarHeader: {
-                            sx: {
-                                direction: 'ltr',
+                <Grid container size={12} flexDirection={'column'} alignItems={'center'} paddingY={2} ref={refs?.reservations}>
+                    <Typography fontSize={14} textAlign={'center'} padding={2} borderBottom={2}>
+                        قم باختيار موعدك من الأوقات المتاحة
+                    </Typography>
+                    <DateCalendar
+                        minDate={today.current}
+                        defaultValue={today.current}
+                        sx={{
+                            borderBottom: 2,
+                            width: 280
+                        }}
+                        slotProps={{
+                            calendarHeader: {
+                                sx: {
+                                    direction: 'ltr',
+                                }
                             }
+                        }}
+                        onChange={handleDateChange}
+                    >
+
+                    </DateCalendar>
+                    <Typography>
+                        الوقت
+                    </Typography>
+                    <Grid container size={12} flexDirection={'row-reverse'} justifyContent={'center'} paddingBottom={1} spacing={2}>
+                        {
+                            times.map((time) =>
+                                <Button key={time.id}
+                                    variant={selectedTime === time.val ? 'contained' : 'outlined'}
+                                    disabled={!time.isAvailable}
+                                    size={'small'}
+                                    sx={{
+                                        borderRadius: 10,
+                                        width: 80,
+                                        textDecoration: !time.isAvailable ? 'line-through' : ''
+                                    }}
+                                    onClick={() => setSelectedTime(time.val)}
+                                >
+                                    {time.time}
+                                </Button>
+                            )
                         }
-                    }}
-                    onChange={handleDateChange}
-                >
 
-                </DateCalendar>
-                <Typography>
-                    الوقت
-                </Typography>
-                <Grid container size={12} flexDirection={'row-reverse'} justifyContent={'center'} paddingBottom={1} spacing={2}>
-                    {
-                        times.map((time) =>
-                            <Button key={time.id}
-                                variant={selectedTime === time.val ? 'contained' : 'outlined'}
-                                disabled={!time.isAvailable}
-                                size={'small'}
-                                sx={{
-                                    borderRadius: 10,
-                                    width: 80,
-                                    textDecoration: !time.isAvailable ? 'line-through' : ''
-                                }}
-                                onClick={() => setSelectedTime(time.val)}
-                            >
-                                {time.time}
-                            </Button>
-                        )
-                    }
-
+                    </Grid>
                 </Grid>
-            </Grid>
 
-            <Grid container flexDirection={'column'} alignItems={'center'} gap={8} paddingY={3} ref={refs?.services}>
-                <Typography variant='h5'>
-                    قم باختيار الخدمات
-                </Typography>
-
-                <Grid container flexDirection={'column'} alignItems={'center'} spacing={2} padding={2}
-                    sx={{
-                        borderRadius: 10,
-                        boxShadow: isSelected(0) ? 8 : 0
-                    }}
-                    onClick={() => handleServiceClick(0)}>
+                <Grid container flexDirection={'column'} alignItems={'center'} gap={8} paddingY={3} ref={refs?.services}>
                     <Typography variant='h5'>
-                        تصوير
+                        قم باختيار الخدمات
                     </Typography>
-                    <Box width={180} height={180} borderRadius={8} overflow={'clip'}>
-                        <img src={img6} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </Box>
+
+                    <Grid container flexDirection={'column'} alignItems={'center'} spacing={2} padding={2}
+                        sx={{
+                            borderRadius: 10,
+                            boxShadow: isSelected(0) ? 8 : 0
+                        }}
+                        onClick={() => handleServiceClick(0)}>
+                        <Typography variant='h5'>
+                            تصوير
+                        </Typography>
+                        <Box width={180} height={180} borderRadius={8} overflow={'clip'}>
+                            <img src={img6} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </Box>
+                    </Grid>
+                    <Grid container flexDirection={'column'} alignItems={'center'} spacing={2} padding={2}
+                        onClick={() => handleServiceClick(1)}
+                        sx={{
+                            borderRadius: 10,
+                            boxShadow: isSelected(1) ? 8 : 0
+                        }}
+                    >
+                        <Typography variant='h5' >
+                            ضيافة
+                        </Typography>
+                        <Box width={180} height={180} borderRadius={8} overflow={'clip'}>
+                            <img src={img7} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </Box>
+                    </Grid>
+                    <Grid container flexDirection={'column'} alignItems={'center'} spacing={2} padding={2}
+                        onClick={() => handleServiceClick(2)}
+                        sx={{
+                            borderRadius: 10,
+                            boxShadow: isSelected(2) ? 8 : 0
+                        }}
+                    >
+                        <Typography variant='h5' >
+                            إضاءة وتزيين
+                        </Typography>
+                        <Box width={180} height={180} borderRadius={8} overflow={'clip'}>
+                            <img src={img8} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </Box>
+                    </Grid>
                 </Grid>
-                <Grid container flexDirection={'column'} alignItems={'center'} spacing={2} padding={2}
-                    onClick={() => handleServiceClick(1)}
-                    sx={{
-                        borderRadius: 10,
-                        boxShadow: isSelected(1) ? 8 : 0
-                    }}
+
+                <Grid container flexDirection={'column'} alignItems={'center'} >
+                    <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                        <Typography component={FormLabel} htmlFor='name' color='primary.main'>
+                            الاسم
+                        </Typography>
+                        <TextField id='name' type='text' required
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                        <Typography component={FormLabel} htmlFor='address' color='primary.main'>
+                            العنوان
+                        </Typography>
+                        <TextField id='address' type='text' required
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                        <Typography component={FormLabel} htmlFor='number' color='primary.main'>
+                            الرقم
+                        </Typography>
+                        <MuiTelInput
+                            id='number' required
+                            value={number}
+                            onChange={(e) => setNumber(e)}
+                            fullWidth
+                        />
+
+                    </Grid>
+                    <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                        <Typography component={FormLabel} htmlFor='email' color='primary.main'>
+                            الايميل
+                        </Typography>
+                        <TextField id='email' type={'email'} required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+                        <Typography component={FormLabel} htmlFor='email' color='primary.main'>
+                            ملاحظات
+                        </Typography>
+                        <TextField id='notes' type={'text'} multiline
+                            rows={4}
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            fullWidth
+                        />
+                    </Grid>
+                </Grid>
+                {
+                    error &&
+                    <Typography color={'error'}>
+                        {error}
+                    </Typography>
+                }
+                <LoadingButton
+                    type="submit"
+                    disabled={isLoading || isServing}
+                    size={'large'}
+                    variant="contained"
+                    aria-label="Login"
+                    loading={isServing}
                 >
-                    <Typography variant='h5' >
-                        ضيافة
-                    </Typography>
-                    <Box width={180} height={180} borderRadius={8} overflow={'clip'}>
-                        <img src={img7} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </Box>
-                </Grid>
-                <Grid container flexDirection={'column'} alignItems={'center'} spacing={2} padding={2}
-                    onClick={() => handleServiceClick(2)}
-                    sx={{
-                        borderRadius: 10,
-                        boxShadow: isSelected(2) ? 8 : 0
-                    }}
-                >
-                    <Typography variant='h5' >
-                        إضاءة وتزيين
-                    </Typography>
-                    <Box width={180} height={180} borderRadius={8} overflow={'clip'}>
-                        <img src={img8} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </Box>
-                </Grid>
+                    تأكيد الحجز
+                </LoadingButton>
             </Grid>
-
-            <Grid container flexDirection={'column'} alignItems={'center'} >
-                <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                    <Typography component={FormLabel} htmlFor='name' color='primary.main'>
-                        الاسم
-                    </Typography>
-                    <TextField id='name' type='text' required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        fullWidth
-                    />
-                </Grid>
-                <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                    <Typography component={FormLabel} htmlFor='address' color='primary.main'>
-                        العنوان
-                    </Typography>
-                    <TextField id='address' type='text' required
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        fullWidth
-                    />
-                </Grid>
-                <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                    <Typography component={FormLabel} htmlFor='number' color='primary.main'>
-                        الرقم
-                    </Typography>
-                    <MuiTelInput
-                        id='number' required
-                        value={number}
-                        onChange={(e) => setNumber(e)}
-                        fullWidth
-                    />
-
-                </Grid>
-                <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                    <Typography component={FormLabel} htmlFor='email' color='primary.main'>
-                        الايميل
-                    </Typography>
-                    <TextField id='email' type={'email'} required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        fullWidth
-                    />
-                </Grid>
-                <Grid container size={12} spacing={2} alignItems={'center'} justifyContent={'space-between'}>
-                    <Typography component={FormLabel} htmlFor='email' color='primary.main'>
-                        ملاحظات
-                    </Typography>
-                    <TextField id='notes' type={'text'} required multiline
-                        rows={4}
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                        fullWidth
-                    />
-                </Grid>
-            </Grid>
-            {
-                error &&
-                <Typography color={'error'}>
-                    {error}
-                </Typography>
-            }
-            <LoadingButton
-                type="submit"
-                disabled={isLoading || isServing}
-                size={'large'}
-                variant="contained"
-                aria-label="Login"
-                loading={isServing}
-            >
-                تأكيد الحجز
-            </LoadingButton>
-
         </Grid >
     )
 }
