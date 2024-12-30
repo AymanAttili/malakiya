@@ -10,6 +10,8 @@ import { serviceName } from "../Enums/services"
 import { Delete } from "@mui/icons-material"
 import Navbar from "../ui/Navbar"
 import { timeFormatter } from "../utils/formatters"
+import ReservationsTableHeader from "../ui/ReservationsTableHeader"
+import ReservationRow from "../ui/ReservationRow"
 
 function Admin() {
     const { isAuthenticated } = useAdmin()
@@ -65,75 +67,13 @@ function Admin() {
                         <Grid container size={12} flexDirection={'column'} >
                             <TableContainer sx={{ maxWidth: '100dvw', maxHeight: '70dvh', overflow: 'auto' }} >
                                 <Table stickyHeader >
-                                    <TableHead >
-                                        <TableRow >
-                                            <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }} >
-                                                الاسم
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }} >
-                                                اليوم
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
-                                                الساعة
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
-                                                الخدمات المضافة
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
-                                                رقم الهاتف
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'center', color: 'white', bgcolor: 'primary.main' }}>
-                                                حالة الطلب
-                                            </TableCell>
-                                            <TableCell sx={{ textAlign: 'center', color: 'white', bgcolor: 'primary.main' }}>
-
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableHead>
+                                    <ReservationsTableHeader />
                                     <TableBody>
                                         {
                                             reservations?.map((res) =>
-                                                <TableRow key={res.id}>
-                                                    <TableCell sx={{ textAlign: 'right' }}>
-                                                        {res.name}
-                                                    </TableCell>
-                                                    <TableCell sx={{ textAlign: 'right' }}>
-                                                        {res.date}
-                                                    </TableCell>
-                                                    <TableCell sx={{ textAlign: 'right' }}>
-                                                        {timeFormatter(res.time)}
-                                                    </TableCell>
-                                                    <TableCell sx={{ textAlign: 'right' }}>
-                                                        <table>
-                                                            {res.services?.map((service) => <li key={service}>{serviceName[service]}</li>)}
-                                                        </table>
-
-                                                    </TableCell>
-                                                    <TableCell sx={{ textAlign: 'right' }}>
-                                                        {res.number}
-                                                    </TableCell>
-                                                    <TableCell >
-                                                        <Grid container justifyContent={'center'} spacing={1}>
-                                                            {
-                                                                res.approved ? <Chip color="success" label='تم التأكيد' />
-                                                                    :
-                                                                    <>
-                                                                        <Chip color="primary" clickable label='مراجعة' onClick={() => handleApprove(res.id)} />
-                                                                        <Chip color="error" clickable label='رفض' onClick={() => handleDelete(res.id)} />
-                                                                    </>
-                                                            }
-                                                        </Grid>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <IconButton onClick={() => handleDelete(res.id)} >
-                                                            <Delete color="error" />
-                                                        </IconButton>
-                                                    </TableCell>
-                                                </TableRow>
+                                                <ReservationRow key={res.id} reservation={res} />
                                             )
                                         }
-
-
                                     </TableBody>
 
                                 </Table>

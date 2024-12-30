@@ -1,4 +1,4 @@
-import { Badge, Chip, Grid2 as Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Badge, Box, Chip, Collapse, Grid2 as Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 import Navbar from "../ui/Navbar"
 import { Navigate } from "react-router-dom"
 import { useAdmin } from "../features/auth/useAdmin"
@@ -13,6 +13,8 @@ import { useDispatchReservation } from "../features/reservations/useDispatchRese
 import Swal from "sweetalert2"
 import { useHighlightedDays } from "../features/reservations/useHighlightedDays"
 import { timeFormatter } from "../utils/formatters"
+import ReservationRow from "../ui/ReservationRow"
+import ReservationsTableHeader from "../ui/ReservationsTableHeader"
 
 function ServerDay(props) {
     const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
@@ -34,45 +36,10 @@ function MonthReservations() {
 
     const { isAuthenticated, isLoading: fetchingAdmin } = useAdmin()
     const { reservations, isLoading } = useReservationsAdmin(payload)
-    const { reservationDispatch } = useDispatchReservation();
 
     const { highlightedDays, refetch } = useHighlightedDays(calendarPayload);
 
-    const copyToClipboard = (e) => {
-        navigator.clipboard.writeText(e.target.innerText)
-            .then(() => {
-                alert('Text copied to clipboard!');
-            })
-            .catch((err) => {
-                alert('Failed to copy text: ' + err);
-            });
-    }
 
-    const handleApprove = async (id) => {
-        const confirm = await Swal.fire({
-            title: 'هل تريد تأكيد الطلب؟',
-            confirmButtonText: 'موافق',
-            cancelButtonText: 'لاحقاً',
-            showCancelButton: true,
-            confirmButtonColor: 'green',
-        })
-
-        if (confirm.isConfirmed)
-            await reservationDispatch({ action: 'approve', payload: { id } })
-    }
-    const handleDelete = async (id) => {
-        const confirm = await Swal.fire({
-            title: 'هل تريد حذف الطلب؟',
-            confirmButtonText: 'موافق',
-            cancelButtonText: 'لاحقاً',
-            showCancelButton: true,
-            confirmButtonColor: '#d32f2f',
-        })
-
-        if (confirm.isConfirmed) {
-            await reservationDispatch({ action: 'delete', payload: { id } })
-        }
-    }
 
     const handleMonthChange = (date) => {
         setPayload(() => {
@@ -143,77 +110,11 @@ function MonthReservations() {
             <Grid container size={12} flexDirection={'column'} >
                 <TableContainer sx={{ maxWidth: '100dvw', maxHeight: '70dvh', overflow: 'auto' }} >
                     <Table stickyHeader >
-                        <TableHead >
-                            <TableRow >
-                                <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }} >
-                                    الاسم
-                                </TableCell>
-                                <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }} >
-                                    اليوم
-                                </TableCell>
-                                <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
-                                    الساعة
-                                </TableCell>
-                                <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
-                                    الخدمات المضافة
-                                </TableCell>
-                                <TableCell sx={{ textAlign: 'right', color: 'white', bgcolor: 'primary.main' }}>
-                                    رقم الهاتف
-                                </TableCell>
-                                <TableCell sx={{ textAlign: 'center', color: 'white', bgcolor: 'primary.main' }}>
-                                    حالة الطلب
-                                </TableCell>
-                                <TableCell sx={{ textAlign: 'center', color: 'white', bgcolor: 'primary.main' }}>
-
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
+                        <ReservationsTableHeader />
                         <TableBody>
                             {
                                 reservations?.map((res) =>
-                                    <TableRow key={res.id}>
-                                        <TableCell sx={{ textAlign: 'right' }}>
-                                            {res.name}
-                                        </TableCell>
-                                        <TableCell sx={{ textAlign: 'right' }}>
-                                            {res.date}
-                                        </TableCell>
-                                        <TableCell sx={{ textAlign: 'right' }}>
-                                            {timeFormatter(res.time)}
-                                        </TableCell>
-                                        <TableCell sx={{ textAlign: 'right' }}>
-                                            <table>
-                                                {res.services?.map((service) => <li key={service}>{serviceName[service]}</li>)}
-                                            </table>
-
-                                        </TableCell>
-                                        <TableCell sx={{ textAlign: 'right' }} >
-                                            <Typography onClick={copyToClipboard} sx={{ cursor: 'copy' }} width={'fit-content'}>
-                                                {res.number}
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell >
-                                            <Grid container justifyContent={'center'} spacing={1}>
-                                                {
-                                                    res.approved ? <Chip color="success" label='تم التأكيد' />
-                                                        :
-                                                        <>
-                                                            <Chip color="primary" clickable label='مراجعة' onClick={() => handleApprove(res.id)} />
-                                                            <Chip color="error" clickable label='رفض' onClick={() => handleDelete(res.id)} />
-                                                        </>
-                                                }
-                                            </Grid>
-                                        </TableCell>
-                                        <TableCell>
-                                            {
-                                                res.approved &&
-                                                <IconButton onClick={() => handleDelete(res.id)} >
-                                                    <Delete color="error" />
-                                                </IconButton>
-                                            }
-
-                                        </TableCell>
-                                    </TableRow>
+                                    <ReservationRow key={res.id} reservation={res} />
                                 )
                             }
 
@@ -230,7 +131,7 @@ function MonthReservations() {
                 </TableContainer>
             </Grid>
 
-        </Grid>
+        </Grid >
     )
 }
 
