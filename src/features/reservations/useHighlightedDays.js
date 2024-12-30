@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 export function useHighlightedDays({ month, year }) {
     const queryClient = useQueryClient();
-    const { data: highlightedDays, error, isError } = useQuery({
+    const { data: highlightedDays, error, isError, refetch } = useQuery({
         queryKey: ["highlightedDays", { month, year }],
         queryFn: async () => {
             const reservations = queryClient.getQueriesData({ queryKey: ["reservations", { action: "fetchMonth", payload: { 'month': month, 'year': year } }] })
@@ -17,9 +17,8 @@ export function useHighlightedDays({ month, year }) {
                 return arr
             }, []) || []
         },
-        refetchInterval: 10 * 1000,
         throwOnError: true
     });
 
-    return { highlightedDays, error, isError };
+    return { highlightedDays, error, isError, refetch };
 }

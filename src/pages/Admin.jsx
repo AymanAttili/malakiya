@@ -9,6 +9,7 @@ import { useDispatchReservation } from "../features/reservations/useDispatchRese
 import { serviceName } from "../Enums/services"
 import { Delete } from "@mui/icons-material"
 import Navbar from "../ui/Navbar"
+import { timeFormatter } from "../utils/formatters"
 
 function Admin() {
     const { isAuthenticated } = useAdmin()
@@ -100,7 +101,7 @@ function Admin() {
                                                         {res.date}
                                                     </TableCell>
                                                     <TableCell sx={{ textAlign: 'right' }}>
-                                                        {res.time}
+                                                        {timeFormatter(res.time)}
                                                     </TableCell>
                                                     <TableCell sx={{ textAlign: 'right' }}>
                                                         <table>

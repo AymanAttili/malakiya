@@ -1,5 +1,9 @@
 import { format } from "date-fns";
 import supabase from "./supabase";
+import { serviceName } from "../Enums/services";
+import { timeFormatter } from "../utils/formatters";
+import confirmationEmail from "../features/emails/confirmationEmail";
+import rejectionEmail from "../features/emails/rejectionEmail";
 
 export async function getPawnedReservations(date) {
     let { data: reservations, error } = await supabase
@@ -99,22 +103,47 @@ export async function getDayReservations(date) {
 
 
 export async function approveReservation(id) {
-    const { error } = await supabase
+    const { data, error } = await supabase
         .from('reservations')
         .update({ approved: 1 })
         .eq('id', id)
+        .select()
+
 
 
     if (error) {
         throw new Error("Reservations could not be updated");
     }
+
+    let services = data[0].services.map((it) => serviceName[it])
+    const formattedTime = timeFormatter(data[0].time)
+
+    const formData = {
+        name: data[0].name,
+        to_email: data[0].email,
+        date: data[0].date,
+        time: formattedTime,
+        services
+    }
+
+
+    confirmationEmail(formData)
 }
 
 export async function deleteReservation(id) {
-    const { error } = await supabase
+    const { data, error } = await supabase
         .from('reservations')
         .delete()
         .eq('id', id)
+        .select()
+
+    const formData = {
+        name: data[0].name,
+        to_email: data[0].email,
+    }
+
+    rejectionEmail(formData)
+
 
     if (error) {
         throw new Error("Reservations could not be deleted");

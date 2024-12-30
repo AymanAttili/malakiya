@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom"
 import { useAdmin } from "../features/auth/useAdmin"
 import { DateCalendar, DayCalendarSkeleton, PickersDay } from "@mui/x-date-pickers"
 import dayjs from "dayjs"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import SpinnerLoader from "../ui/SpinnerLoader"
 import { serviceName } from "../Enums/services"
 import { Delete } from "@mui/icons-material"
@@ -12,7 +12,7 @@ import { useReservationsAdmin } from "../features/reservations/useReservationsAd
 import { useDispatchReservation } from "../features/reservations/useDispatchReservations"
 import Swal from "sweetalert2"
 import { useHighlightedDays } from "../features/reservations/useHighlightedDays"
-import { useQueryClient } from "@tanstack/react-query"
+import { timeFormatter } from "../utils/formatters"
 
 function ServerDay(props) {
     const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
@@ -36,10 +36,19 @@ function MonthReservations() {
     const { reservations, isLoading } = useReservationsAdmin(payload)
     const { reservationDispatch } = useDispatchReservation();
 
-    const { highlightedDays } = useHighlightedDays(calendarPayload);
+    const { highlightedDays, refetch } = useHighlightedDays(calendarPayload);
 
+    const copyToClipboard = (e) => {
+        navigator.clipboard.writeText(e.target.innerText)
+            .then(() => {
+                alert('Text copied to clipboard!');
+            })
+            .catch((err) => {
+                alert('Failed to copy text: ' + err);
+            });
+    }
 
-    const handleApprove = async (id) => { // Fixing 
+    const handleApprove = async (id) => {
         const confirm = await Swal.fire({
             title: 'هل تريد تأكيد الطلب؟',
             confirmButtonText: 'موافق',
@@ -93,6 +102,11 @@ function MonthReservations() {
         })
     }
 
+    useEffect(() => {
+        if (payload.action === 'fetchMonth')
+            refetch();
+
+    }, [payload, reservations, refetch])
 
     if (fetchingAdmin)
         return <SpinnerLoader />
@@ -165,7 +179,7 @@ function MonthReservations() {
                                             {res.date}
                                         </TableCell>
                                         <TableCell sx={{ textAlign: 'right' }}>
-                                            {res.time}
+                                            {timeFormatter(res.time)}
                                         </TableCell>
                                         <TableCell sx={{ textAlign: 'right' }}>
                                             <table>
@@ -173,8 +187,10 @@ function MonthReservations() {
                                             </table>
 
                                         </TableCell>
-                                        <TableCell sx={{ textAlign: 'right' }}>
-                                            {res.number}
+                                        <TableCell sx={{ textAlign: 'right' }} >
+                                            <Typography onClick={copyToClipboard} sx={{ cursor: 'copy' }} width={'fit-content'}>
+                                                {res.number}
+                                            </Typography>
                                         </TableCell>
                                         <TableCell >
                                             <Grid container justifyContent={'center'} spacing={1}>
@@ -189,9 +205,13 @@ function MonthReservations() {
                                             </Grid>
                                         </TableCell>
                                         <TableCell>
-                                            <IconButton onClick={() => handleDelete(res.id)} >
-                                                <Delete color="error" />
-                                            </IconButton>
+                                            {
+                                                res.approved &&
+                                                <IconButton onClick={() => handleDelete(res.id)} >
+                                                    <Delete color="error" />
+                                                </IconButton>
+                                            }
+
                                         </TableCell>
                                     </TableRow>
                                 )
