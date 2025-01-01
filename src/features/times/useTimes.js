@@ -3,7 +3,7 @@ export const useTimes = (pawnedReservations = []) => {
         return pawnedReservations.filter((t) => t.time === time).length === 0
     }
     const times = [
-        { id: 1, time: '12:00 AM', val: '12:00:00', isAvailable: isAvailable('12:00:00') },
+        { id: 1, time: '12:00 PM', val: '12:00:00', isAvailable: isAvailable('12:00:00') },
         { id: 2, time: '2:00 PM', val: '14:00:00', isAvailable: isAvailable('14:00:00') },
         { id: 3, time: '4:00 PM', val: '16:00:00', isAvailable: isAvailable('16:00:00') },
         { id: 4, time: '6:00 PM', val: '18:00:00', isAvailable: isAvailable('18:00:00') },
