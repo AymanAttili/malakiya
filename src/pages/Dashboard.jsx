@@ -108,47 +108,8 @@ function Dashboard() {
                 </Box>
             </Grid>
 
-            <Grid container size={12} flexDirection={'column'} spacing={10} padding={2} ref={main}>
+            <Grid container size={12} flexDirection={'column'} marginTop={10} padding={2} ref={main}>
                 <Container maxWidth={'md'}>
-                    <Grid container size={12} flexDirection={'column'} spacing={5}>
-                        <Typography maxWidth={500}>
-                            إختيار التفاصيل مهم جداً ، لذلك نقدم لك العديد من الإقتراحات لتناسبك في يوم زفافك.
-                        </Typography>
-                        <Box sx={{
-                            width: {
-                                xs: 130,
-                                sm: 200
-                            },
-                            height: {
-                                xs: 170,
-                                sm: 300
-                            }
-                        }} alignSelf={'end'} borderRadius={5} overflow={'clip'}>
-                            <img src={img5} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        </Box>
-                        <Box sx={{
-                            width: {
-                                xs: 130,
-                                sm: 200
-                            },
-                            height: {
-                                xs: 170,
-                                sm: 300
-                            },
-                            marginLeft: {
-                                xs: 20,
-                                sm: 30
-                            },
-                            marginTop: {
-                                xs: -8,
-                                sm: -15
-                            },
-                            marginBottom: 15
-                        }} alignSelf={'end'} borderRadius={5} overflow={'clip'}>
-                            <img src={img4} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        </Box>
-                    </Grid>
-
                     <ReservationForm refs={{
                         reservations,
                         services
