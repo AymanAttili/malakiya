@@ -38,7 +38,7 @@ function Navbar() {
             alignItems={'center'}
             size={12} paddingX={4} spacing={{ md: 8, lg: 12 }} bgcolor={alpha(theme.palette.secondary.main, 0.85)} >
             <Grid container alignItems={'end'}>
-                <Typography variant="h5" component={RouterLink} padding={2} to={'/admin'} sx={{
+                <Typography variant="h5" component={RouterLink} padding={2} to={'/'} sx={{
                     textDecoration: 'none',
                     color: 'primary.main'
                 }}>

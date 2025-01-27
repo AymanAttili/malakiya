@@ -102,7 +102,7 @@ function Dashboard() {
 
             <Grid container size={12} flexDirection={'column'} alignItems={'center'} sx={{ zIndex: -1 }}>
                 <Box width={'100%'} height={{ sm: 400, md: 600, lg: 800 }} marginTop={{ xs: 9, sm: 0 }}>
-                    <video autoPlay muted loop style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
+                    <video autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
                         <source src={homeVideo} type="video/mp4"></source>
                     </video>
                 </Box>
