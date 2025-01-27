@@ -10,6 +10,7 @@ import theme from "../theme"
 import img1 from '../images/img1.png'
 import img5 from '../images/img5.png'
 import img4 from '../images/img4.png'
+import homeVideo from '../assets/homeVideo.mp4'
 import ReservationForm from "./ReservationForm";
 import { useRef, useState } from "react";
 
@@ -99,15 +100,12 @@ function Dashboard() {
                 </Menu>
             </Grid>
 
-            <Grid container size={12} flexDirection={'column'} alignItems={'center'}>
-                <Box width={'100%'} height={{ xs: 400, sm: 500, md: 600 }} >
-                    <img src={img1} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <Grid container size={12} flexDirection={'column'} alignItems={'center'} sx={{ zIndex: -1 }}>
+                <Box width={'100%'} height={{ sm: 400, md: 600, lg: 800 }} marginTop={{ xs: 9, sm: 0 }}>
+                    <video autoPlay muted loop style={{ width: '100%', height: '100%', objectFit: 'cover' }}>
+                        <source src={homeVideo} type="video/mp4"></source>
+                    </video>
                 </Box>
-                <Button variant="outlined" sx={{ marginTop: -25, marginBottom: 25, fontSize: 24, color: "white", bgcolor: alpha(theme.palette.primary.main, 0.6) }}
-                    onClick={() => reservations.current?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                    احجز عرسك الآن!
-                </Button>
             </Grid>
 
             <Grid container size={12} flexDirection={'column'} spacing={10} padding={2} ref={main}>
