@@ -42,8 +42,8 @@ function Login() {
                     <TextField id='email' type='email'
                         disabled={isLoading}
                         fullWidth
-                        error={!!formErrors.password}
-                        helperText={formErrors.password?.message}
+                        error={!!formErrors.email}
+                        helperText={formErrors.email?.message}
                         {...register('email', {
                             required: "Email is required"
                         })
