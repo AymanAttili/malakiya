@@ -58,7 +58,7 @@ function ReservationRow({ reservation }) {
                     </IconButton>
                 </TableCell>
                 <TableCell sx={{ textAlign: 'right' }}>
-                    {reservation.name}
+                    {reservation.users[0].name}
                 </TableCell>
                 <TableCell sx={{ textAlign: 'right' }}>
                     {reservation.date}
@@ -68,13 +68,13 @@ function ReservationRow({ reservation }) {
                 </TableCell>
                 <TableCell sx={{ textAlign: 'right' }}>
                     <table>
-                        {reservation.services?.map((service) => <li key={service}>{serviceName[service]}</li>)}
+                        {reservation.services?.map((service) => <li key={service.id}>{serviceName[service.value]}</li>)}
                     </table>
 
                 </TableCell>
                 <TableCell sx={{ textAlign: 'right' }} >
                     <Typography onClick={copyToClipboard} sx={{ cursor: 'copy' }} width={'fit-content'}>
-                        {reservation.number}
+                        {reservation.users[0].number}
                     </Typography>
                 </TableCell>
                 <TableCell >
@@ -113,8 +113,8 @@ function ReservationRow({ reservation }) {
                             <TableBody>
 
                                 <TableRow key={`${reservation.id}b`}>
-                                    <TableCell sx={{ textAlign: 'right' }} >{reservation.email}</TableCell>
-                                    <TableCell sx={{ textAlign: 'right' }} >{reservation.address}</TableCell>
+                                    <TableCell sx={{ textAlign: 'right' }} >{reservation.users[0].email}</TableCell>
+                                    <TableCell sx={{ textAlign: 'right' }} >{reservation.users[0].address}</TableCell>
                                     <TableCell sx={{ textAlign: 'right' }} >{reservation.notes}</TableCell>
 
                                 </TableRow>

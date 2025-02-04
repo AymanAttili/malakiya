@@ -18,16 +18,50 @@ export async function getPawnedReservations(date) {
 }
 
 export async function reserveAPI(payload) {
-    const { data, error } = await supabase
+
+    const reservePayload = {
+        date: payload.date,
+        time: payload.time,
+        notes: payload.notes
+    }
+
+    const { data: reservation, error: resError } = await supabase
         .from('reservations')
         .insert([
-            payload
+            reservePayload
         ])
         .select()
 
-    if (error) {
+    if (resError) {
         throw new Error("Reservations could not be loaded");
     }
+
+    const userPayload = {
+        name: payload.name,
+        email: payload.email,
+        address: payload.address,
+        number: payload.number,
+        reservation_id: reservation[0].id
+    }
+
+    const { data } = await supabase
+        .from('users')
+        .insert([
+            userPayload
+        ])
+        .select()
+
+    const services = payload.services.map((ser) => {
+        return {
+            value: ser,
+            reservation_id: reservation[0].id
+        }
+    })
+
+    await supabase
+        .from('services')
+        .insert(services)
+
     return data;
 }
 
@@ -38,7 +72,15 @@ export async function getReservations(notApproved = false, date) {
 
     let { data: reservations, error } = await supabase
         .from('reservations')
-        .select('*')
+        .select(`
+            id,
+            date,
+            time,
+            approved,
+            notes,
+            users(*),
+            services(*)
+            `)
         .order('date', { ascending: true })
         .order('time', { ascending: true })
         .gte('date', date)
@@ -54,7 +96,15 @@ export async function getReservations(notApproved = false, date) {
 export async function getNotApprovedReservations(date) {
     let { data: reservations, error } = await supabase
         .from('reservations')
-        .select('*')
+        .select(`
+            id,
+            date,
+            time,
+            approved,
+            notes,
+            users(*),
+            services(*)
+            `)
         .order('date', { ascending: true })
         .order('time', { ascending: true })
         .gte('date', date)
@@ -74,7 +124,15 @@ export async function getMonthReservations(month, year) {
         upper = `${year + 1}/1/01`
     let { data: reservations, error } = await supabase
         .from('reservations')
-        .select('*')
+        .select(`
+            id,
+            date,
+            time,
+            approved,
+            notes,
+            users(*),
+            services(*)
+            `)
         .order('date', { ascending: true })
         .order('time', { ascending: true })
         .gte('date', lower)
@@ -90,7 +148,15 @@ export async function getDayReservations(date) {
     date = format(date, 'yyyy/MM/dd');
     let { data: reservations, error } = await supabase
         .from('reservations')
-        .select('*')
+        .select(`
+            id,
+            date,
+            time,
+            approved,
+            notes,
+            users(*),
+            services(*)
+            `)
         .order('time', { ascending: true })
         .eq('date', date)
 
