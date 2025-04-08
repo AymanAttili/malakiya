@@ -173,7 +173,15 @@ export async function approveReservation(id) {
         .from('reservations')
         .update({ approved: 1 })
         .eq('id', id)
-        .select()
+        .select(`
+            id,
+            date,
+            time,
+            approved,
+            notes,
+            users(*),
+            services(*)
+            `)
 
 
 
@@ -185,8 +193,8 @@ export async function approveReservation(id) {
     const formattedTime = timeFormatter(data[0].time)
 
     const formData = {
-        name: data[0].name,
-        to_email: data[0].email,
+        name: data[0].users[0].name,
+        to_email: data[0].users[0].email,
         date: data[0].date,
         time: formattedTime,
         services
@@ -201,11 +209,19 @@ export async function deleteReservation(id) {
         .from('reservations')
         .delete()
         .eq('id', id)
-        .select()
+        .select(`
+            id,
+            date,
+            time,
+            approved,
+            notes,
+            users(*),
+            services(*)
+            `)
 
     const formData = {
-        name: data[0].name,
-        to_email: data[0].email,
+        name: data[0].users[0].name,
+        to_email: data[0].users[0].email,
     }
 
     rejectionEmail(formData)
