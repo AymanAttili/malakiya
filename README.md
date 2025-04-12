@@ -1,8 +1,5 @@
-# React + Vite
+A website for a local Wedding hall gives the user the ability to book a reservation, and gives the Admin the full privilages to View, Approve, Deny reservations, an archive for all previous reservations in a certain month or day, and sends an email automatically to the reservation barrier on approve on deny.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Stack used: 
+- Frontend: REactJS, MUI, Tanstack Query.
+- Back-end-as-a-service(BAAS): Supabase.
